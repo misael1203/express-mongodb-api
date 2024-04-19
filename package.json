@@ -4,17 +4,22 @@
   "description": "Proyecto de prueba con mongodb y express",
   "main": "./src/index.ts",
   "scripts": {
-    "start": "ts-node ./src/index.ts"
+    "start": "ts-node ./src/index.ts",
+    "live": "nodemon ./src/index.ts"
   },
   "author": "Misael Tavera",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
-    "mongodb": "^6.5.0"
+    "mongodb": "^6.5.0",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.9.6",
+    "tedious": "^18.1.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
+    "@types/mysql": "^2.15.26",
     "@types/node": "^20.12.5",
     "nodemon": "^3.1.0",
     "ts-node": "^10.9.2",

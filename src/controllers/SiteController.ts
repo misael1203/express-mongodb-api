@@ -2,30 +2,17 @@ import { Request, Response } from 'express';
 import client from '../config/database';
 
 export const getHome = async (req: Request, res: Response) => {
+    // This use mongodb sample_mflix database
     try {
-        // Connect the client to the server
         await client.connect();
+        
+        const collection = await client.query('SELECT * FROM users');
 
-        // Obtener referencia a la colección de películas
-        const database = client.db('sample_mflix');
-        const collection = database.collection('movies');
-
-        // Obtener todas las películas como un array de objetos
-        const movies = await collection.find().limit(10).toArray();
-
-        // Extraer solo los datos relevantes de las películas
-        const moviesData = movies.map(movie => ({
-            title: movie.title,
-            year: movie.year,
-            // Agrega más propiedades si es necesario
-        }));
-
-        res.json({ movies: moviesData });
-    } catch (error) {
-        res.status(500).json({ message: 'Error connecting to server', error });
+        res.json({ data: collection });
+    } catch (error:any) {
+        res.status(500).json({ message: error.message, error });
     } finally {
-        // Cerrar la conexión con la base de datos
-        await client.close();
+        if(client) await client.close();
     }    
 };
 

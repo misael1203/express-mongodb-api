@@ -1,17 +1,19 @@
-import { MongoClient, MongoClientOptions, ServerApiVersion } from "mongodb";
-import * as dotenv from 'dotenv';
-dotenv.config();
+import MongoDB from './drivers/mongodb';
+import MysqlDB from './drivers/mysqldb';
+import SQLServer from './drivers/sqlserverdb';
 
-const uri:string = process.env.DB_URI || '';
+const driverType: string = process.env.DB_DRIVER || 'mysql';
 
-const options:MongoClientOptions = {
-    serverApi: {
-        version: ServerApiVersion.v1,
-        strict: true,
-        deprecationErrors: true
-    }
-}
+const drivers: Record<string, any> = {
+    mongodb: new MongoDB(),
+    mysql: new MysqlDB(),
+    sqlserver: new SQLServer(),
+};
 
-const client = new MongoClient(uri, options)
+const selectedDriver: any = drivers[driverType.toLowerCase()];
 
-export default client;
+if(!selectedDriver)  throw new Error(`${driverType} driver not found`);
+
+selectedDriver.connect();
+
+export default selectedDriver;
